@@ -5,9 +5,9 @@ from pydantic import BaseModel
 
 
 class User(BaseModel):
-    id: int
-    name: str
-    surname: str
+   
+    firstname: str
+    lastname: str
     email: str
     phone: str
     password: str
