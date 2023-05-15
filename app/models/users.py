@@ -15,4 +15,5 @@ class User(BaseModel):
     idCompany: int
    
     
-    
+class UserLogin(BaseModel):
+    username: str   
