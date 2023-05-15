@@ -2,13 +2,14 @@
 from typing import List
 #lib import
 from fastapi import APIRouter, status, Response, HTTPException
+from passlib.context import CryptContext
 #local import 
 from models.users import User
-
 import internals.database
 
 
 router=APIRouter()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 async def getAllUserInDB() -> List[User]:
     database = internals.database.connect()
@@ -18,6 +19,9 @@ async def getAllUserInDB() -> List[User]:
     request.close()
     database.close()
     return users
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 @router.get("/users", responses={status.HTTP_204_NO_CONTENT:{}})
 async def getAllUser()-> List[User]:
@@ -33,12 +37,14 @@ async def createUser(userToCreate:User):
     database = internals.database.connect()
     request= database.cursor( dictionary=True )    
     users= await getAllUserInDB()
+    hashedPassword=get_password_hash(userToCreate.password)
+ 
     for user in users:
        if user["email"]== userToCreate.email:
            raise HTTPException(status_code=status.HTTP_409_CONFLICT)
     
     sql_query=("INSERT INTO users (firstname, lastname, email, phone, password, idStatus, idCompany) VALUES (%s, %s, %s, %s, %s, %s, %s)")
-    user_data = (userToCreate.firstname,userToCreate.lastname, userToCreate.email, userToCreate.phone, userToCreate.password, userToCreate.idStatus, userToCreate.idCompany)
+    user_data = (userToCreate.firstname,userToCreate.lastname, userToCreate.email, userToCreate.phone, hashedPassword, userToCreate.idStatus, userToCreate.idCompany)
     request.execute(sql_query, user_data)
     database.commit()
     request.close()
