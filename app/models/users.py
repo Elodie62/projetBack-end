@@ -16,4 +16,8 @@ class User(BaseModel):
    
     
 class UserLogin(BaseModel):
-    username: str   
+    firstname: str
+    lastname: str
+    email: str
+    nameCompany: str  
+    nameStatus: str
