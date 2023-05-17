@@ -1,11 +1,3 @@
-
-
-# db = connection.MySQLConnection(user='root', password='root',
-#                                  host='host.docker.internal',
-#                                  database='plannings')
-# print(db)
-# db.close()
-
 #system import 
 #lib import
 from fastapi import FastAPI, APIRouter, status, Response, HTTPException
