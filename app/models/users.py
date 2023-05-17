@@ -21,3 +21,4 @@ class UserLogin(BaseModel):
     email: str
     nameCompany: str  
     nameStatus: str
+    idCompany: int 
