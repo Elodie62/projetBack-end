@@ -27,7 +27,7 @@ def get_password_hash(password):
 @router.get("/users", responses={status.HTTP_204_NO_CONTENT:{}})
 async def getAllUser(currentUser: Annotated[User, Depends(decode_token)])-> List[UserLogin]:
     print(currentUser)
-    if (currentUser.nameStatus != "admin" and currentUser.nameStatus != "maintener"):
+    if (currentUser.nameStatus != "admin" and currentUser.nameStatus != "maintainer"):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     users= await getAllUserInDB()
@@ -61,7 +61,7 @@ async def createUser(currentUser: Annotated[User, Depends(decode_token)],userToC
     
 @router.put("/users/{email}", status_code=status.HTTP_201_CREATED)
 async def updateUser(currentUser: Annotated[User, Depends(decode_token)], email: str, userToUpdate: User):
-    if (currentUser.nameStatus != "admin" and currentUser.nameStatus != "maintener"):
+    if (currentUser.nameStatus != "admin" and currentUser.nameStatus != "maintainer"):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     
@@ -80,7 +80,7 @@ async def updateUser(currentUser: Annotated[User, Depends(decode_token)], email:
     
 @router.delete("/users/{email}", responses={status.HTTP_204_NO_CONTENT:{}})
 async def delete_user(currentUser: Annotated[User, Depends(decode_token)],userEmail: str) :
-    if (currentUser.nameStatus != "admin" and currentUser.nameStatus != "maintener"):
+    if (currentUser.nameStatus != "admin" and currentUser.nameStatus != "maintainer"):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
     users= await getAllUserInDB()
