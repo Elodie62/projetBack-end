@@ -26,7 +26,7 @@ def get_password_hash(password):
 
 @router.get("/users", responses={status.HTTP_204_NO_CONTENT:{}})
 async def getAllUser(currentUser: Annotated[User, Depends(decode_token)])-> List[UserLogin]:
-    print(currentUser)
+  
     if (currentUser.nameStatus != "admin" and currentUser.nameStatus != "maintainer"):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
@@ -57,6 +57,7 @@ async def createUser(currentUser: Annotated[User, Depends(decode_token)],userToC
     database.commit()
     request.close()
     database.close()
+   
     
     
 @router.put("/users/{email}", status_code=status.HTTP_201_CREATED)
