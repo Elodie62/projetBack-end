@@ -42,7 +42,8 @@ async def decode_token(token: Annotated[str, Depends(oauth2_scheme)]) -> User:
     )
     try:
         decoded_data = jwt.decode(token, JWT_KEY, algorithms=['HS256'])
-        return UserLogin(firstname= decoded_data.get("firstname"), lastname= decoded_data.get("lastname"), email= decoded_data.get("email"),nameCompany= decoded_data.get("company"), nameStatus= decoded_data.get("status"), )
+       
+        return UserLogin(firstname= decoded_data.get("firstname"), lastname= decoded_data.get("lastname"), email= decoded_data.get("email"),nameCompany= decoded_data.get("company"), nameStatus= decoded_data.get("status"), idCompany= decoded_data.get("idCompany"), )
     except JWTError:
         return credentials_exception
 
@@ -59,6 +60,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
             data["lastname"]= user["lastname"]
             data["company"]= user["nameCompany"]
             data["status"]=user["nameStatus"]
+            data["idCompany"]= user["idCompany"]
             jwt_token = jwt.encode(data, JWT_KEY, algorithm="HS256")
             return {"access_token": jwt_token, "token_type": "bearer"}
     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect username or password")
