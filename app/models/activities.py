@@ -11,4 +11,5 @@ class Activities(BaseModel):
     idPlanning:int 
     idCompany: int 
     nbInscription : int
+    ownerEmail: str
     
